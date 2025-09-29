@@ -1,52 +1,84 @@
 <?php
-// 1. Inclusions et configurations initiales
 require_once __DIR__ . '/vendor/autoload.php';
 
-// Utilisez les classes de la nouvelle bibliothèque
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use TCPDF as PDF;
 
-if (isset($_POST['URL_Form'])) {
+if (isset($_POST['URL_Form']) && isset($_POST['Name_Activity']) && isset($_POST['Message_Qr'])) {
     $URL_Form = htmlspecialchars($_POST['URL_Form']);
-    $data = $URL_Form;
-
-    // 3. Création et configuration du QR code avec Endroid
-    $qrCode = new QrCode($data);
-
-
-    // 4. Choix du "Writer" (le moteur de rendu)
-    $writer = new SvgWriter();
-
-    // 5. Génération de l'image en mémoire
-    $result = $writer->write($qrCode);
-    $imageData = $result->getString();
-
-    // 6. Création d'un nom de fichier unique et de son chemin
-    $tempDir = 'temp_qrcodes/';
-    $filename = 'qrcode' . uniqid() . '.svg';
-    $filepath = $tempDir . $filename;
-
-    // Assurez-vous que le dossier temporaire existe et est inscriptible
-    if (!is_dir($tempDir) || !is_writable($tempDir)) {
-        http_response_code(500);
-        echo json_encode(['success' => false, 'message' => 'Erreur: Le dossier de destination n\'existe pas ou n\'est pas inscriptible.']);
-        exit;
-    }
-
-    // 7. Sauvegarde de l'image avec gestion des erreurs
-    if (file_put_contents($filepath, $imageData) === false) {
-        http_response_code(500);
-        echo json_encode(['success' => false, 'message' => 'Erreur lors de la sauvegarde du fichier.']);
-        exit;
-    }
-
-    // 8. Renvoi de l'URL du fichier au format JSON
+    $Name_Form = htmlspecialchars($_POST['Name_Activity']);
+    $Message_Form = htmlspecialchars($_POST['Message_Qr']);
+    inscrielaBD($Name_Form, $URL_Form, $Message_Form);
+    afficheapercu($GLOBALS['last_Data']);
+    generezPDF($GLOBALS['last_Data']);
     header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'image_url' => $filepath]);
-} else {
-    http_response_code(400);
-    header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'message' => 'Requête invalide.']);
+    echo json_encode(['success' => true, 'image_url' => $GLOBALS['Svgfilepath'], 'Name_Activity' => $Name_Form, 'Message_Qr' => $Message_Form, 'pdf_url' => $GLOBALS['Doawnloadpdffilepath']]);
 }
+
+function inscrielaBD($donnee1, $donnee2, $donnee3) {
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "qr_generate_bd";
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "INSERT INTO hisory_generate ( name_activite , form_url , message_qr) VALUES ( :valeur1, :valeur2, :valeur3)";
+        $stmp = $conn->prepare($sql);
+        $stmp->bindParam(':valeur1', $donnee1);
+        $stmp->bindParam(':valeur2', $donnee2);
+        $stmp->bindParam(':valeur3', $donnee3);
+        $stmp->execute();
+
+        $last_Id = $conn->lastInsertId();
+        $sql = "SELECT * FROM hisory_generate WHERE id = :last_Id";
+        $stmp = $conn->prepare($sql);
+        $stmp->bindParam(':last_Id', $last_Id);
+        $stmp->execute();
+        $GLOBALS['last_Data'] = $stmp->fetch(PDO::FETCH_ASSOC);
+        return $GLOBALS['last_Data'];
+    }
+    catch (PDOException $e) {
+        echo "erreur lors de l'insertion des données: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
+function afficheapercu($donnee1) {
+    $qrCode = new QrCode($donnee1['form_url']);
+    $writer = new Svgwriter();
+    $result = $writer->write($qrCode);
+    $SvgData = $result->getString();
+    $tempDir = 'temp_qrcodes/';
+    $Svgfilename = 'CodeQr' . uniqid() . '.svg';
+    $GLOBALS['Svgfilepath'] = $tempDir . $Svgfilename;
+    file_put_contents($GLOBALS['Svgfilepath'], $SvgData);
+}
+
+function generezPDF($donnee1) {
+    $pdf = new PDF('P', 'mm', 'A4', true, 'UTF-8', false);
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+    $pdf->SetAuthor('LANDRYMASTER');
+    $pdf->SetTitle($donnee1['name_activite']);
+    $pdf->AddPage();
+    $pdf->SetFont('helvetica', 'BI', 25);
+    $pdf->Cell(0,10,"",0,2,'C');
+    $pdf->Cell(0,35, strtoupper($donnee1['name_activite']),0,120,'C');
+    $pdf->ImageSVG($GLOBALS['Svgfilepath'], 50, 80, 120, 120, "", "", "C", 1, false);
+    $pdf->SetFont('helvetica', 'I', 20);
+    $pdf->MultiCell(0, 10, ucwords($donnee1['message_qr']), 0, 'C', 0, 1, '', '', true);
+    $pdf->SetY(230);
+    $pdf->SetFont('helvetica', 'I', 12);
+    $pdf->Cell(0, 10, $donnee1['form_url'], 0, 1, 'C');
+    $UploadDir = '\/temp_Pdf/';
+    $Pdffilename = 'Document' . uniqid() . '.pdf';
+    $GLOBALS['Pdffilepath'] = $UploadDir . $Pdffilename;
+    $pdf->Output( __DIR__ . $GLOBALS['Pdffilepath'], 'F');   
+    $GLOBALS['Doawnloadpdffilepath'] = "temp_Pdf/" . $Pdffilename;
+}
+
 ?>

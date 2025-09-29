@@ -48,43 +48,41 @@ form.addEventListener('submit', (e) => {
         URL_Form = form['URL_Form'].value;
         Message_Qr = form['Message_Qr'].value || '';
 
-        form['Name_Activity'].value = '';
-        form['URL_Form'].value = '';
-        form['Message_Qr'].value = '';
-
-        console.log(Name_Activity,URL_Form, Message_Qr,);
-
         const formData = new FormData();
         formData.append('Name_Activity', Name_Activity);
         formData.append('URL_Form', URL_Form);
         formData.append('Message_Qr', Message_Qr);
+
+        form['Name_Activity'].value = '';
+        form['URL_Form'].value = '';
+        form['Message_Qr'].value = '';
+
+        console.log(Name_Activity, URL_Form, Message_Qr);
 
         fetch('traitement.php', {
             method: 'POST',
             body: formData 
             })
             .then(response => {
-                // Le script PHP renvoie du JSON, donc on le parse en tant que tel.
                 if (!response.ok) {
                     throw new Error('La réponse du serveur n\'est pas OK.');
                 }
                 return response.json();
             })
             .then(data => {
-                // Si la réponse JSON est un succès
                 if (data.success) {
-                    // Créez le chemin d'accès complet à l'image
-                    const imageUrl = data.image_url;
+                    document.getElementById('qr-code-image').innerHTML = `<img src="${data.image_url}" alt="QR Code" class="max-w-full h-auto block bg-white" />`;
+                    document.getElementById('qr-code-image').classList.add('bg-white', 'p-2', 'rounded', 'shadow-md');
 
-                    // Mettez à jour la balise <img> avec l'URL du fichier
-                    document.getElementById('qr-code-image').innerHTML = ``;
-                    document.getElementById('qr-code-image').innerHTML = `<img src="${imageUrl}" alt="QR Code" class="max-w-full h-auto block" />`;
-
-                    // Mettez à jour le lien de téléchargement
                     const downloadBtn = document.getElementById('download-qr-btn');
-                    downloadBtn.href = imageUrl;
+                    downloadBtn.href = data.pdf_url;
+                    
+                    document.getElementById('Message').classList.add('bg-white');
+                    document.getElementById('Message').innerHTML = `<p class="text-center text-gray-700 mt-2 font-bold"> ${data.Name_Activity} </p> 
+                                                                    <hr class="my-2 border-gray-300 w-full">
+                                                                    <p class="text-center text-gray-700 mb-2"> ${data.Message_Qr} </p>`;  
+                                                          
                 } else {
-                    // Gérez le cas où le script PHP renvoie une erreur
                     console.error('Erreur du serveur:', data.message);
                 }
             })
@@ -92,6 +90,5 @@ form.addEventListener('submit', (e) => {
                 console.error('Fetch error:', error);
                 document.getElementById('qr-code-image').innerHTML = `<p>Une erreur est survenue. Veuillez réessayer.</p>`;
             });
-        }
-        
+  }
     });

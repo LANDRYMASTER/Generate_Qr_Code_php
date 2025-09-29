@@ -79,11 +79,11 @@
                     <p>Le QR code s'affichera ici</p>
                 </div>
 
-                <div id="Message" class="w-64 h-12 mb-6 bg-gray-700 border-4 border-gray-600 flex justify-center items-center text-gray-400">
-                    <p>Le message s'affichera ici</p>
+                <div id="Message" class="w-64 min-h-24 mb-10 bg-gray-700 border-4 border-gray-600 flex justify-center items-center flex-col">
+                    <p class="text-gray-400">Le message s'affichera ici</p>
                 </div>
                 
-                <a href="#" id="download-qr-btn" download="qrcode.svg" class="w-full px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 cursor-pointer text-center">
+                <a href="#" id="download-qr-btn" download="qrcode.pdf" class="w-full px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 cursor-pointer text-center">
                     Télécharger
                 </a>
 
