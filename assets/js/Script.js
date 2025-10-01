@@ -1,6 +1,19 @@
 const Links = document.querySelectorAll('.items-links');
 const Contents_Section = document.querySelectorAll('.content_section');
 
+function updatePreview(data) {
+    document.getElementById('qr-code-image').innerHTML = `<img src="${data.image_url}" alt="QR Code" class="max-w-full h-auto block bg-white" />`;
+    document.getElementById('qr-code-image').classList.add('bg-white', 'p-2', 'rounded', 'shadow-md');
+
+    const downloadBtn = document.getElementById('download-qr-btn');
+    downloadBtn.href = data.pdf_url;
+    
+    document.getElementById('Message').classList.add('bg-white');
+    document.getElementById('Message').innerHTML = `<p class="text-center text-gray-700 mt-2 font-bold"> ${data.Name_Activity} </p> 
+                                                    <hr class="my-2 border-gray-300 w-full">
+                                                    <p class="text-center text-gray-700 mb-2"> ${data.Message_Qr} </p>`;
+}
+
 window.addEventListener('load', () => {
     Contents_Section[0].classList.add('visible');
     Links[0].classList.add('active');
@@ -19,7 +32,6 @@ Links.forEach(link => {
         event.preventDefault();
 
         const targetId = link.getAttribute('data-target');
-        console.log(targetId);
 
         Contents_Section.forEach(section => {
             section.classList.remove('visible');
@@ -38,6 +50,7 @@ Links.forEach(link => {
 });
 
 const form = document.getElementById('Form_Qr');
+const history = document.getElementById('Form_History');
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -71,17 +84,7 @@ form.addEventListener('submit', (e) => {
             })
             .then(data => {
                 if (data.success) {
-                    document.getElementById('qr-code-image').innerHTML = `<img src="${data.image_url}" alt="QR Code" class="max-w-full h-auto block bg-white" />`;
-                    document.getElementById('qr-code-image').classList.add('bg-white', 'p-2', 'rounded', 'shadow-md');
-
-                    const downloadBtn = document.getElementById('download-qr-btn');
-                    downloadBtn.href = data.pdf_url;
-                    
-                    document.getElementById('Message').classList.add('bg-white');
-                    document.getElementById('Message').innerHTML = `<p class="text-center text-gray-700 mt-2 font-bold"> ${data.Name_Activity} </p> 
-                                                                    <hr class="my-2 border-gray-300 w-full">
-                                                                    <p class="text-center text-gray-700 mb-2"> ${data.Message_Qr} </p>`;  
-                                                          
+                    updatePreview(data);                                  
                 } else {
                     console.error('Erreur du serveur:', data.message);
                 }
@@ -91,4 +94,42 @@ form.addEventListener('submit', (e) => {
                 document.getElementById('qr-code-image').innerHTML = `<p>Une erreur est survenue. Veuillez réessayer.</p>`;
             });
   }
-    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const historyList = document.getElementById('history-list');
+
+    historyList.addEventListener('click', function(event) {
+        let clickedItem = event.target.closest('.historique-element');
+        
+        if (!clickedItem) return;
+
+        document.querySelectorAll('.historique-element').forEach(item => {
+            item.classList.remove('bg-blue-800', 'border-l-4', 'border-blue-500'); 
+        });
+
+        clickedItem.classList.add('bg-blue-800', 'border-l-4', 'border-blue-500'); 
+        const refUnique = clickedItem.getAttribute('data-ref');
+        
+        if (refUnique) {
+            fetchDetails(refUnique);
+        }
+});
+
+function fetchDetails(ref) {
+    fetch(`historique.php?ref_unique=${ref}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updatePreview(data); 
+            } else {
+                console.log(data.message) ;
+            }
+        })
+        .catch(error => {
+            console.error('Erreur AJAX:', error);
+            console.log('Impossible de récupérer les détails du QR Code.');
+        });
+}
+});
+

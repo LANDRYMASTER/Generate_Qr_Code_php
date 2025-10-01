@@ -17,19 +17,36 @@ if (isset($_POST['URL_Form']) && isset($_POST['Name_Activity']) && isset($_POST[
     echo json_encode(['success' => true, 'image_url' => $GLOBALS['Svgfilepath'], 'Name_Activity' => $Name_Form, 'Message_Qr' => $Message_Form, 'pdf_url' => $GLOBALS['Doawnloadpdffilepath']]);
 }
 
-function inscrielaBD($donnee1, $donnee2, $donnee3) {
+function inscrielaBD($donnee1, $donnee2, $donnee3,) {
     $servername = "localhost";
     $username = "root";
     $password = "";
     $dbname = "qr_generate_bd";
+
+    $hachage = hash('sha256', $donnee2);
+    $donnee4 = 'REF-' . substr($hachage, 0, 10);
+
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO hisory_generate ( name_activite , form_url , message_qr) VALUES ( :valeur1, :valeur2, :valeur3)";
+
+        $sql_select = "SELECT * FROM hisory_generate WHERE ref_unique = :ref_unique";
+        $stmp = $conn->prepare($sql_select);
+        $stmp->bindParam(':ref_unique', $donnee4);
+        $stmp->execute();
+        $donneetrue = $stmp->fetch(PDO::FETCH_ASSOC);
+
+        if ($donneetrue) {
+            $GLOBALS['last_Data'] = $donneetrue;
+            return;
+        }
+
+        $sql = "INSERT INTO hisory_generate ( name_activite , form_url , message_qr, ref_unique) VALUES ( :valeur1, :valeur2, :valeur3, :valeur4)";
         $stmp = $conn->prepare($sql);
         $stmp->bindParam(':valeur1', $donnee1);
         $stmp->bindParam(':valeur2', $donnee2);
         $stmp->bindParam(':valeur3', $donnee3);
+        $stmp->bindParam(':valeur4', $donnee4);
         $stmp->execute();
 
         $last_Id = $conn->lastInsertId();
@@ -38,7 +55,6 @@ function inscrielaBD($donnee1, $donnee2, $donnee3) {
         $stmp->bindParam(':last_Id', $last_Id);
         $stmp->execute();
         $GLOBALS['last_Data'] = $stmp->fetch(PDO::FETCH_ASSOC);
-        return $GLOBALS['last_Data'];
     }
     catch (PDOException $e) {
         echo "erreur lors de l'insertion des données: " . $e->getMessage();
@@ -47,13 +63,18 @@ function inscrielaBD($donnee1, $donnee2, $donnee3) {
 }
 
 function afficheapercu($donnee1) {
+    $tempDir = 'temp_qrcodes/';
+    $Svgfilename = $donnee1['ref_unique'] . '.svg';
+    $GLOBALS['Svgfilepath'] = $tempDir . $Svgfilename;
+
+    if (file_exists($GLOBALS['Svgfilepath'])) {
+        return;
+    }
+
     $qrCode = new QrCode($donnee1['form_url']);
     $writer = new Svgwriter();
     $result = $writer->write($qrCode);
     $SvgData = $result->getString();
-    $tempDir = 'temp_qrcodes/';
-    $Svgfilename = 'CodeQr' . uniqid() . '.svg';
-    $GLOBALS['Svgfilepath'] = $tempDir . $Svgfilename;
     file_put_contents($GLOBALS['Svgfilepath'], $SvgData);
 }
 
@@ -75,7 +96,7 @@ function generezPDF($donnee1) {
     $pdf->SetFont('helvetica', 'I', 12);
     $pdf->Cell(0, 10, $donnee1['form_url'], 0, 1, 'C');
     $UploadDir = '\/temp_Pdf/';
-    $Pdffilename = 'Document' . uniqid() . '.pdf';
+    $Pdffilename = $donnee1['ref_unique'] . '.pdf';
     $GLOBALS['Pdffilepath'] = $UploadDir . $Pdffilename;
     $pdf->Output( __DIR__ . $GLOBALS['Pdffilepath'], 'F');   
     $GLOBALS['Doawnloadpdffilepath'] = "temp_Pdf/" . $Pdffilename;

@@ -12,7 +12,11 @@
         <h1 class="text-center text-3xl font-bold">Qr Generate Master</h1>
         <ul>
             <li class="items-links" data-target="#Generate-Qr"><a href="#" >Generez Qr-code</a></li>
-            <li class="items-links" data-target="#Historique_Code"><a href="#" >historique</a></li>
+            <li class="items-links" data-target="#Historique_Code">
+                <form action="traitement.php" method="post" id="Form_History">
+                    <a href="#" >historique</a>
+                </form>
+            </li>
             <li></li>
         </ul>
         <p class="dedicace">@Ingenieur_Sekoua</p>
@@ -47,6 +51,7 @@
             </section>
 
             <section id="Historique_Code" class="content_section invisible FromLeft">
+                <?php include 'historique.php'; ?>
                 <div id="history-section" class="w-full ">
                     <div class="w-full p-6">
                         <h2 class="text-2xl font-bold text-white mb-6">Historique</h2>
@@ -59,8 +64,33 @@
                                 class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                         </div>
-                        
-                        <ul id="history-list" class="space-y-4 overflow-y-auto h-96"></ul>
+                        <?php $historique = fetchHistory(); 
+                        ?>
+                        <ul id="history-list" class="space-y-4 overflow-y-auto h-96">
+                            <?php foreach ($historique as $entry) {
+                                echo '<li class="historique-element bg-gray-800 hover:bg-gray-700 p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out flex justify-between items-center" 
+                                            data-ref=' . htmlspecialchars($entry['ref_unique']) . '>
+                                            <div>
+                                                <div class="text-gray-50 font-semibold text-base">
+                                                    ' . htmlspecialchars($entry['name_activite']) . '                                       
+                                                </div>                                     
+                                                <div class="text-gray-500 text-xs">   
+                                                    ' . htmlspecialchars($entry['form_url']) . '                                 
+                                                </div>
+                                            </div>                                   
+                                            <div class="text-right">
+                                                <span class="text-gray-400 text-sm block">  
+                                                    ' . htmlspecialchars($entry['ref_unique']) . '                                   
+                                                </span>
+                                                <span class="text-gray-500 text-xs block">    
+                                                    ' . htmlspecialchars(substr($entry['date_inscrit'], 0 , 10)) . '
+                                                    <br>
+                                                    ' . htmlspecialchars(substr($entry['date_inscrit'], 11 , 8)) . '                         
+                                                </span>
+                                            </div>
+                                        </li>        ';
+                            } ?>            
+                        </ul>
                     </div>
                     <div class="w-full p-6">
                         <h2 class="text-2xl font-bold text-white mb-6">Détails du QR Code</h2>
