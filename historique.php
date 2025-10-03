@@ -3,17 +3,24 @@
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/traitement.php';
 
+if (isset($_GET['refresh']) && $_GET['refresh'] === 'Ok') {
+    $historique = fetchHistory();
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'historique' => $historique]);
+    exit;
+}
+
 function fetchHistory() {
     $servername = "localhost";
-    $username = 'root';
-    $password = '';
-    $dbname = 'qr_generate_bd';
+    $username = "root";
+    $password = "";
+    $dbname = "QR_GENERATE";
 
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT * FROM hisory_generate ORDER BY id DESC";
+        $sql = "SELECT * FROM history_generate ORDER BY id DESC";
         $stmp = $conn->prepare($sql);
         $stmp->execute();
         $historique = $stmp->fetchAll(PDO::FETCH_ASSOC);
@@ -49,14 +56,15 @@ if (isset($_GET['ref_unique'])) {
 
 function recupererDonneesParRef(string $ref_unique): ?array {
     $servername = "localhost";
-    $username = 'root';
-    $password = '';
-    $dbname = 'qr_generate_bd';
+    $username = "root";
+    $password = "";
+    $dbname = "QR_GENERATE";
+
 
     try {
         $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM hisory_generate WHERE ref_unique = :ref_unique";
+        $sql = "SELECT * FROM history_generate WHERE ref_unique = :ref_unique";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':ref_unique', $ref_unique);
         $stmt->execute();
@@ -67,6 +75,7 @@ function recupererDonneesParRef(string $ref_unique): ?array {
     }
 }
 
+fetchHistory();
 
 ?>
 

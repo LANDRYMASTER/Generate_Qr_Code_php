@@ -17,11 +17,30 @@ if (isset($_POST['URL_Form']) && isset($_POST['Name_Activity']) && isset($_POST[
     echo json_encode(['success' => true, 'image_url' => $GLOBALS['Svgfilepath'], 'Name_Activity' => $Name_Form, 'Message_Qr' => $Message_Form, 'pdf_url' => $GLOBALS['Doawnloadpdffilepath']]);
 }
 
+
+function couperChaine($lien): array {
+    $longueurdulien = mb_strlen($lien, 'UTF-8');
+    if ($longueurdulien > 45) {
+        $partie_1 = mb_substr($lien, 0, 45, 'UTF-8');
+        $partie_2 = mb_substr($lien, 45, 90, 'UTF-8'); 
+        $partie_3 = mb_substr($lien, 90, null, 'UTF-8');
+    } else {
+        $partie_1 = $lien;
+        $partie_2 = '';
+        $partie_3 = '';
+    }
+    return [
+        'partie_1' => $partie_1,
+        'partie_2' => $partie_2,
+        'partie_3' => $partie_3 ?? '',
+    ];
+}
+
 function inscrielaBD($donnee1, $donnee2, $donnee3,) {
     $servername = "localhost";
-    $username = "root";
+    $username = "Root";
     $password = "";
-    $dbname = "qr_generate_bd";
+    $dbname = "QR_GENERATE";
 
     $hachage = hash('sha256', $donnee2);
     $donnee4 = 'REF-' . substr($hachage, 0, 10);
@@ -30,7 +49,7 @@ function inscrielaBD($donnee1, $donnee2, $donnee3,) {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql_select = "SELECT * FROM hisory_generate WHERE ref_unique = :ref_unique";
+        $sql_select = "SELECT * FROM history_generate WHERE ref_unique = :ref_unique";
         $stmp = $conn->prepare($sql_select);
         $stmp->bindParam(':ref_unique', $donnee4);
         $stmp->execute();
@@ -41,7 +60,7 @@ function inscrielaBD($donnee1, $donnee2, $donnee3,) {
             return;
         }
 
-        $sql = "INSERT INTO hisory_generate ( name_activite , form_url , message_qr, ref_unique) VALUES ( :valeur1, :valeur2, :valeur3, :valeur4)";
+        $sql = "INSERT INTO history_generate ( name_activite , form_url , message_qr, ref_unique) VALUES ( :valeur1, :valeur2, :valeur3, :valeur4)";
         $stmp = $conn->prepare($sql);
         $stmp->bindParam(':valeur1', $donnee1);
         $stmp->bindParam(':valeur2', $donnee2);
@@ -50,7 +69,7 @@ function inscrielaBD($donnee1, $donnee2, $donnee3,) {
         $stmp->execute();
 
         $last_Id = $conn->lastInsertId();
-        $sql = "SELECT * FROM hisory_generate WHERE id = :last_Id";
+        $sql = "SELECT * FROM history_generate WHERE id = :last_Id";
         $stmp = $conn->prepare($sql);
         $stmp->bindParam(':last_Id', $last_Id);
         $stmp->execute();
@@ -94,8 +113,15 @@ function generezPDF($donnee1) {
     $pdf->MultiCell(0, 10, ucwords($donnee1['message_qr']), 0, 'C', 0, 1, '', '', true);
     $pdf->SetY(230);
     $pdf->SetFont('helvetica', 'I', 12);
-    $pdf->Cell(0, 10, $donnee1['form_url'], 0, 1, 'C');
-    $UploadDir = '\/temp_Pdf/';
+    $urlForm = couperChaine($donnee1['form_url']);
+    $pdf->Cell(0, 10, $urlForm['partie_1'], 0, 1, 'C');
+    if ($urlForm['partie_2']) {
+        $pdf->Cell(0, 10, $urlForm['partie_2'], 0, 1, 'C');
+    }
+    if ($urlForm['partie_3']) {
+        $pdf->Cell(0, 10, $urlForm['partie_3'], 0, 1, 'C');
+    }
+    $UploadDir = '/' . 'temp_Pdf/';
     $Pdffilename = $donnee1['ref_unique'] . '.pdf';
     $GLOBALS['Pdffilepath'] = $UploadDir . $Pdffilename;
     $pdf->Output( __DIR__ . $GLOBALS['Pdffilepath'], 'F');   

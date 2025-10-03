@@ -3,21 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <title>Générateur de QR Code Professionnel | Qr Generate Master</title>
+    <meta name="description" content="Créez, personnalisez et téléchargez vos QR codes (URL, Texte, Fichiers) instantanément. Suivi d'historique et téléchargement PDF inclus.">
+    <meta name="keywords" content="générateur qr code, créer qr code, qr code gratuit, historique qr code, télécharger qr code pdf, Endroid, Tailwind CSS">
+    <meta name="author" content="Ingenieur_Sekoua">
+    
+    <meta property="og:title" content="Générateur de QR Code Gratuit et Avancé">
+    <meta property="og:description" content="Créez des QR codes professionnels avec historique et options de téléchargement PDF.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.seo.fr/definition/canonical">
+    <meta property="og:image" content="https://www.spocket.co/fr/blogs/regles-relatives-a-la-taille-des-images-du-site">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qr Generate Master | Création et Gestion de QR Codes">
+    <meta name="twitter:description" content="Créez des QR codes professionnels avec historique et options de téléchargement PDF.">
+    <meta name="twitter:image" content="https://www.hostinger.com/fr/support/6466412-hostinger-createur-de-sites-web-comment-ajouter-des-images-d-apercu-des-liens">
+    
+    <link rel="icon" type="image/png" href="assets/img/qr-code.svg">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png"> <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="assets/css/Style.css">
-    <title>Qr Generate Master</title>
 </head>
 <body>
     <section class="nav-link FromRight">
         <h1 class="text-center text-3xl font-bold">Qr Generate Master</h1>
-        <ul>
-            <li class="items-links" data-target="#Generate-Qr"><a href="#" >Generez Qr-code</a></li>
-            <li class="items-links" data-target="#Historique_Code">
-                <form action="traitement.php" method="post" id="Form_History">
-                    <a href="#" >historique</a>
-                </form>
+        <ul> 
+            <li class="items-links" data-target="#Generate-Qr">
+                <div class="tooltip-container">
+                    <span class="tooltip"><a href="#" >Creer Qr-code</a></span>
+                    <span class="text">
+                        <div class="borde-back">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-line-icon lucide-scan-line"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+                        </div>
+                        </div>
+                    </span>
+                </div>
             </li>
-            <li></li>
+            <li class="items-links" data-target="#Historique_Code">
+                <div class="tooltip-container">
+                    <span class="tooltip"><a href="#" >historique</a></span>
+                    <span class="text">
+                        <div class="borde-back">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table-of-contents-icon lucide-table-of-contents"><path d="M16 5H3"/><path d="M16 12H3"/><path d="M16 19H3"/><path d="M21 5h.01"/><path d="M21 12h.01"/><path d="M21 19h.01"/></svg>
+                        </div>
+                        </div>
+                    </span>
+                </div>
+            </li>
         </ul>
         <p class="dedicace">@Ingenieur_Sekoua</p>
     </section>
@@ -25,75 +59,56 @@
     <div class="body">
         <div class="change">
             <section id="Generate-Qr" class="content_section invisible FromLeft">
+                <div class="loading">
+                    <div class="loader">
+                        <div class="box1"></div>
+                        <div class="box2"></div>
+                        <div class="box3"></div>
+                    </div>
+                    <h2 class="text-2xl font-medium pl-4 text-black text-shadow-lg">Passons <span><svg class="inline " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-line-icon lucide-scan-line"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span></h2>
+                </div>
                 <div class="block-generate">
-                    <h2 class="text-2xl font-medium mb-8 text-center text-white text-shadow-lg">GENERATEUR DE QR-CODE</h2>
                     <form action="traitement.php" method="post" id="Form_Qr">
                         <div class="mb-4 w-4/5 mx-auto bg-white rounded-lg p-4">
-                            <label for="name" class="block mb-2 text-black font-bold">Nommez l'activité</label>
+                            <label for="name" class="block mb-2 text-black font-bold">Nom de l'activité</label>
                             <input type="text" id="name" name="Name_Activity"
-                                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
+                                class="border-b border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
                         </div>
                         <div class="mb-4 w-4/5 mx-auto bg-white rounded-lg p-4">
-                            <label for="URL" class="block text-black font-bold mb-2">Saisisez l'URL vers laquelle redirigera ce QR</label>
+                            <label for="URL" class="block text-black font-bold mb-2">URL du lien </label>
                             <input type="url" id="URL" name="URL_Form"
-                                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
+                                class="border-b border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
                         </div>
                         <div class="mb-4 w-4/5 mx-auto bg-white rounded-lg p-4">
-                            <label for="CTA" class="block text-black font-bold mb-2">Ajouter un message sous le Qr Code (*Optionel)</label>
+                            <label for="CTA" class="block text-black font-bold mb-2">Description (*Optionel)</label>
                             <input type="text" id="CTA" name="Message_Qr"
-                                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400">
+                                class="border-b border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400">
                         </div>
-                        <div class="w-3/5 mx-auto">
-                            <input type="submit" value="Generez" class=" cursor-pointer w-full bg-blue-500 text-xl font-bold text-white px-4 py-4 rounded-lg hover:bg-blue-600"></input>
+                        <div id="generate" class="w-3/5 mx-auto rounded-lg ">
+                            <input type="submit" value="Generez" class="cursor-pointer w-full text-xl font-bold text-white px-4 py-4"></input>
                         </div>
                     </form>
                 </div>
             </section>
 
             <section id="Historique_Code" class="content_section invisible FromLeft">
-                <?php include 'historique.php'; ?>
                 <div id="history-section" class="w-full ">
                     <div class="w-full p-6">
-                        <h2 class="text-2xl font-bold text-white mb-6">Historique</h2>
+                        <h2 class="text-2xl font-bold text-black mb-6">Historique</h2>
                         
                         <div class="mb-4">
                             <input 
                                 type="text" 
                                 id="search-input" 
                                 placeholder="Rechercher par mot-clé ou date..." 
-                                class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full px-4 py-2 bg-white text-[#ea00ff] border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                         </div>
-                        <?php $historique = fetchHistory(); 
-                        ?>
                         <ul id="history-list" class="space-y-4 overflow-y-auto h-96">
-                            <?php foreach ($historique as $entry) {
-                                echo '<li class="historique-element bg-gray-800 hover:bg-gray-700 p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out flex justify-between items-center" 
-                                            data-ref=' . htmlspecialchars($entry['ref_unique']) . '>
-                                            <div>
-                                                <div class="text-gray-50 font-semibold text-base">
-                                                    ' . htmlspecialchars($entry['name_activite']) . '                                       
-                                                </div>                                     
-                                                <div class="text-gray-500 text-xs">   
-                                                    ' . htmlspecialchars($entry['form_url']) . '                                 
-                                                </div>
-                                            </div>                                   
-                                            <div class="text-right">
-                                                <span class="text-gray-400 text-sm block">  
-                                                    ' . htmlspecialchars($entry['ref_unique']) . '                                   
-                                                </span>
-                                                <span class="text-gray-500 text-xs block">    
-                                                    ' . htmlspecialchars(substr($entry['date_inscrit'], 0 , 10)) . '
-                                                    <br>
-                                                    ' . htmlspecialchars(substr($entry['date_inscrit'], 11 , 8)) . '                         
-                                                </span>
-                                            </div>
-                                        </li>        ';
-                            } ?>            
                         </ul>
                     </div>
                     <div class="w-full p-6">
-                        <h2 class="text-2xl font-bold text-white mb-6">Détails du QR Code</h2>
+                        <h2 class="text-2xl font-bold text-black mb-6">Détails du QR Code</h2>
                         <div id="history-qr-details" class="flex flex-col items-center text-center">
                             <p class="text-gray-400">Sélectionnez un élément de l'historique pour voir les détails juste a coté .</p>
                         </div>
@@ -102,11 +117,11 @@
             </section>
         </div>
         <section class="upload-Qr FromLeft">
-            <div class="flex flex-col items-center py-8 px-16 bg-gray-800 rounded-lg shadow-lg ">
-                <h2 class="mb-4 text-2xl font-bold text-white">Aperçu du QR Code</h2>
+            <div class="flex flex-col items-center px-4 bg-white rounded-4xl shadow-lg ">
+                <div class="w-2/3 min-h-4 rounded-br-4xl rounded-br-4xl rounded-bl-4xl bg-black "></div>
                 
-                <div id="qr-code-image" class="w-64 h-70 mb-6 bg-gray-700 border-4 border-gray-600 flex justify-center items-center text-gray-400">
-                    <p>Le QR code s'affichera ici</p>
+                <div id="qr-code-image" class="rounded-sm w-64 h-70 my-6 bg-gray-700 border-4 border-gray-600 flex justify-center items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#f47fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-line-icon lucide-scan-line"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
                 </div>
 
                 <div id="Message" class="w-64 min-h-24 mb-10 bg-gray-700 border-4 border-gray-600 flex justify-center items-center flex-col">
@@ -119,7 +134,7 @@
 
                 <ul class="example-1">
                     <li class="icon-content">
-                        <a href="https://www.spotify.com/" aria-label="Spotify" data-social="spotify" class="link">
+                        <a href="" aria-label="Spotify" data-social="spotify" class="link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
                             <path d="M29.059 15.085C29.058 7.322 22.764 1.028 15 1.028S0.941 7.323 0.941 15.087c0 6.989 5.1 12.787 11.781 13.875l0.081 0.011V19.15H9.232v-4.065h3.57v-3.096a4.962 4.962 0 0 1 5.329 -5.469l-0.017 -0.001c1.124 0.016 2.212 0.115 3.273 0.292l-0.126 -0.018v3.459h-1.774a2.033 2.033 0 0 0 -2.291 2.204l-0.001 -0.008v2.636h3.899l-0.623 4.065h-3.276v9.823c6.762 -1.101 11.862 -6.899 11.863 -13.888" fill="currentColor"></path>
                         </svg>
@@ -127,7 +142,7 @@
                         <div class="tooltip">Facebook</div>
                     </li>
                     <li class="icon-content">
-                        <a href="https://www.pinterest.com/" aria-label="Pinterest" data-social="pinterest" class="link">
+                        <a href="" aria-label="Pinterest" data-social="pinterest" class="link">
                         <svg version="1.1" viewBox="0 0 100 100" xml:space="preserve">
                             <path d="M60 45a15 15 0 1 0 -4.395 10.61A14.4 14.4 0 0 0 60 45.225l-0.004 -0.237zm8.1 0a23.006 23.006 0 1 1 -6.738 -16.347 22.2 22.2 0 0 1 6.742 15.96l-0.004 0.41v-0.02zm6.327 -24.022v0.008a5.4 5.4 0 1 1 -1.582 -3.818 5.177 5.177 0 0 1 1.556 3.705v0.11zm-29.4 -12.9 -4.482 -0.03q-4.072 -0.03 -6.184 0t-5.655 0.176a47.143 47.143 0 0 0 -6.312 0.638l0.273 -0.038a23.571 23.571 0 0 0 -4.362 1.136l0.16 -0.052a15.446 15.446 0 0 0 -8.52 8.452l-0.038 0.102a22.543 22.543 0 0 0 -1.065 4.062l-0.02 0.138a45 45 0 0 0 -0.597 5.96l-0.004 0.08q-0.147 3.548 -0.176 5.655t0 6.184 0.03 4.482 -0.03 4.482 0 6.184 0.176 5.655c0.075 2.193 0.292 4.275 0.638 6.312l-0.038 -0.273a23.571 23.571 0 0 0 1.136 4.362l-0.052 -0.16a15.446 15.446 0 0 0 8.452 8.52l0.102 0.038c1.192 0.446 2.606 0.82 4.062 1.065l0.138 0.02c1.758 0.308 3.84 0.525 5.955 0.597l0.08 0.004q3.548 0.147 5.655 0.176t6.184 0l4.455 -0.09 4.482 0.03q4.072 0.03 6.184 0t5.655 -0.176a47.143 47.143 0 0 0 6.312 -0.638l-0.273 0.038a23.571 23.571 0 0 0 4.362 -1.136l-0.16 0.052a15.446 15.446 0 0 0 8.52 -8.452l0.038 -0.102c0.446 -1.192 0.82 -2.606 1.065 -4.062l0.02 -0.138c0.308 -1.758 0.525 -3.84 0.597 -5.955l0.004 -0.08q0.147 -3.548 0.176 -5.655t0 -6.184 -0.03 -4.482 0.03 -4.482 0 -6.184 -0.176 -5.655a47.143 47.143 0 0 0 -0.638 -6.312l0.038 0.273a23.743 23.743 0 0 0 -1.136 -4.362l0.052 0.16a15.446 15.446 0 0 0 -8.452 -8.52l-0.102 -0.038a22.543 22.543 0 0 0 -4.062 -1.065l-0.138 -0.02a45 45 0 0 0 -5.955 -0.597l-0.08 -0.004q-3.548 -0.147 -5.655 -0.176t-6.184 0zM90 45q0 13.418 -0.3 18.574a24.9 24.9 0 0 1 -26.194 26.13l0.06 0.004q-5.157 0.3 -18.574 0.3t-18.574 -0.3A24.9 24.9 0 0 1 0.286 63.514l-0.004 0.06q-0.3 -5.157 -0.3 -18.574t0.3 -18.574A24.9 24.9 0 0 1 26.478 0.297l-0.058 -0.005q5.157 -0.3 18.574 -0.3t18.574 0.3a24.9 24.9 0 0 1 26.13 26.194l0.004 -0.06Q90 31.578 90 45" fill="currentColor"></path>
                         </svg>
@@ -135,7 +150,7 @@
                         <div class="tooltip">Instagram</div>
                     </li>
                     <li class="icon-content">
-                        <a href="https://dribbble.com/" aria-label="Dribbble" data-social="dribbble" class="link">
+                        <a href="" aria-label="Dribbble" data-social="dribbble" class="link">
                         <svg version="1.1" viewBox="0 0 100 100">
                             <path d="M53.564 38.947 87.066 0h-7.941L50.033 33.816 26.801 0H0l35.136 51.137L0 91.977h7.941l30.722 -35.712 24.54 35.712H90L53.561 38.947zM42.686 51.588l-3.56 -5.093L10.8 5.977h12.194l22.86 32.699 3.56 5.093 29.714 42.503H66.935L42.686 51.591z" fill="currentColor"></path>
                         </svg>
@@ -143,7 +158,7 @@
                         <div class="tooltip">Twitter</div>
                     </li>
                     <li class="icon-content">
-                        <a href="https://telegram.org/" aria-label="Telegram" data-social="telegram" class="link">
+                        <a href="" aria-label="Telegram" data-social="telegram" class="link">
                         <svg version="1.1" viewBox="0 0 100 100">
                             <path d="M20 80A12 12 0 0 1 8 68v-40A12 12 0 0 1 20 16h56A12 12 0 0 1 88 28v40A12 12 0 0 1 76 80zm10.5 -47.12a4 4 0 1 0 -5.001 6.24l15.001 12.004a12 12 0 0 0 15.001 0l15.001 -12a4 4 0 1 0 -5.001 -6.247l-15.001 12a4 4 0 0 1 -5.001 0z" fill="currentColor"></path>
                         </svg>
