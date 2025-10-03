@@ -1,11 +1,17 @@
 
-/vendor/*
+/vendor/
+composer.lock  # Souvent ignoré sauf si vous voulez forcer des versions précises
 
-!/tmp/cache/models/empty
-!/temp_Pdf
-!/temp_qrcodes
+!/temp_pdf/
+!/temp_qrcodes/
+*.log
+*.tmp
+*.bak
 
-/app/tmp/*
-/app/Config/core.php
-/app/Config/database.php
-/vendors/*
+.env
+.DS_Store      # Fichiers Mac OS
+Thumbs.db      # Fichiers Windows
+
+.vscode/
+
+/tests/_output/

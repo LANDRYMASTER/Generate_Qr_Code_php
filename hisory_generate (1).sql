@@ -42,7 +42,7 @@ CREATE TABLE `hisory_generate` (
 
 INSERT INTO `hisory_generate` (`id`, `name_activite`, `form_url`, `message_qr`, `ref_unique`, `date_inscrit`) VALUES
 (1, 'renforcement des capacités', 'https://forms.gle/m9QLkdHdyTaHBsE89', 'facultatif ', 'REF-cfbb84cb74', '2025-09-30 10:43:11.145363'),
-(2, 'Ange Landry Bile', 'https://web.facebook.com/profile.php?id=100061089645654', 'Ma profil facebook', 'REF-2e8b0ded6d', '2025-09-30 10:43:11.145363'),
+(2, 'Ange Landry Bile', 'https://web.facebook.com/profile.php?id=100061089645654', 'Mon profil facebook', 'REF-2e8b0ded6d', '2025-09-30 10:43:11.145363'),
 (3, 'Agence Emploi Jeune', 'https://agenceemploijeunes.ci/site/', 'facultatif ', 'REF-183adb5f15', '2025-09-30 14:54:22.485297'),
 (4, 'Pretest Formation en Ligne', 'https://forms.gle/m9QLkdHdyTaHBsE89hgfdsk', '', 'REF-0e8e05ea03', '2025-10-01 17:30:53.547304'),
 (5, 'renforcement des capacités', 'https://docs.google.com/forms/d/e/1FAIpQLSe9eMm-Qzi8I0YwdIOI4qUkNc9k2g_MgkbU5TqfaMygrIYdJg/viewform?usp=header', '', 'REF-255ecb0d96', '2025-10-01 18:49:19.442049');
