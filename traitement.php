@@ -38,9 +38,9 @@ function couperChaine($lien): array {
 
 function inscrielaBD($donnee1, $donnee2, $donnee3,) {
     $servername = "localhost";
-    $username = "Root";
-    $password = "";
-    $dbname = "QR_GENERATE";
+    $username = "u242529393_LANDRYMASTER";
+    $password = "Haveela@Davy2000";
+    $dbname = "u242529393_QR_GENERATE";
 
     $hachage = hash('sha256', $donnee2);
     $donnee4 = 'REF-' . substr($hachage, 0, 10);

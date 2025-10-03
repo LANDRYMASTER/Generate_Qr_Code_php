@@ -1,0 +1,11 @@
+
+/vendor/*
+
+!/tmp/cache/models/empty
+!/temp_Pdf
+!/temp_qrcodes
+
+/app/tmp/*
+/app/Config/core.php
+/app/Config/database.php
+/vendors/*

@@ -12,9 +12,9 @@ if (isset($_GET['refresh']) && $_GET['refresh'] === 'Ok') {
 
 function fetchHistory() {
     $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "QR_GENERATE";
+    $username = "u242529393_LANDRYMASTER";
+    $password = "Haveela@Davy2000";
+    $dbname = "u242529393_QR_GENERATE";
 
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -56,10 +56,9 @@ if (isset($_GET['ref_unique'])) {
 
 function recupererDonneesParRef(string $ref_unique): ?array {
     $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "QR_GENERATE";
-
+    $username = "u242529393_LANDRYMASTER";
+    $password = "Haveela@Davy2000";
+    $dbname = "u242529393_QR_GENERATE";
 
     try {
         $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
